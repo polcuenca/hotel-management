@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "606369813335",
+    "project_id": "hotelmanagement-cb6a6",
+    "storage_bucket": "hotelmanagement-cb6a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606369813335:android:eb3f93f3d3ee2ec7de2412",
+        "android_client_info": {
+          "package_name": "com.example.hotelmanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWfzYTm88jl2sqhl0R2LReUlfwSqWbNbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
