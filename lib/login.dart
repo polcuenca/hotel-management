@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hotelmanagement/main.dart';
 import '../auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,13 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
-  Future<void> signInWithEmailAndPasssword() async {
+  Future<void> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => MyApp()));
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -66,9 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: isLogin
-          ? signInWithEmailAndPasssword
-          : createUserWithEmailAndPassword,
+      onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
       child: Text(isLogin ? 'Login' : 'Register'),
     );
   }
@@ -92,15 +88,13 @@ class _LoginPageState extends State<LoginPage> {
             height: double.infinity,
             width: double.infinity,
             padding: const EdgeInsets.all(20),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _entryField('Email', _controllerEmail),
-                  _entryField('Password', _controllerPassword),
-                  _errorMessage(),
-                  _submitButton(),
-                  _loginOrRegisterButton(),
-                ])));
+            child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Image.asset("assets/images/hotel.png", width: 150, height: 150),
+              _entryField('Email', _controllerEmail),
+              _entryField('Password', _controllerPassword),
+              _errorMessage(),
+              _submitButton(),
+              _loginOrRegisterButton(),
+            ])));
   }
 }

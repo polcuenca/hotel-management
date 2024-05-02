@@ -6,7 +6,9 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // Initialize Firebase
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -14,7 +16,7 @@ void main() async {
       primaryColor: Colors.blue.shade900,
       hintColor: Colors.cyan,
     ),
-    home: LoginPage(),
+    home: const LoginPage(),
   ));
 }
 
@@ -26,30 +28,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late String employeeName,
-      employeePosition,
-      employeeContact,
-      employeeDepartment;
+  late String employeeName, employeePosition, employeeContact, employeeDepartment;
 
   getEmployeeName(name) {
-    this.employeeName = name;
+    employeeName = name;
   }
 
   getEmployeePosition(position) {
-    this.employeePosition = position;
+    employeePosition = position;
   }
 
   getEmployeeContact(contact) {
-    this.employeeContact = contact;
+    employeeContact = contact;
   }
 
   getEmployeeDepartment(department) {
-    this.employeeDepartment = department;
+    employeeDepartment = department;
   }
 
   createData() {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
 
     //create a Map
     Map<String, dynamic> employee = {
@@ -65,8 +63,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   readData() {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
 
     documentReference.get().then((snapshot) {
       print(snapshot.get("employeeName"));
@@ -77,8 +74,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   updateData() {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
 
     //create a Map
     Map<String, dynamic> employee = {
@@ -94,8 +90,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   deleteData() {
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("MyEmployees").doc(employeeName);
 
     documentReference.delete().whenComplete(() {
       print("$employeeName deleted successfully");
@@ -107,7 +102,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Hotel Management System",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
@@ -120,12 +115,8 @@ class _MyAppState extends State<MyApp> {
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: TextFormField(
-                decoration: InputDecoration(
-                    labelText: "Name",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.blue.shade900, width: 2.0))),
+                decoration:
+                    InputDecoration(labelText: "Name", fillColor: Colors.white, focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue.shade900, width: 2.0))),
                 onChanged: (String name) {
                   getEmployeeName(name);
                 },
@@ -135,11 +126,7 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                    labelText: "Position",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.blue.shade900, width: 2.0))),
+                    labelText: "Position", fillColor: Colors.white, focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue.shade900, width: 2.0))),
                 onChanged: (String position) {
                   getEmployeePosition(position);
                 },
@@ -149,11 +136,7 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                    labelText: "Contact Number",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.blue.shade900, width: 2.0))),
+                    labelText: "Contact Number", fillColor: Colors.white, focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue.shade900, width: 2.0))),
                 onChanged: (String contact) {
                   getEmployeeContact(contact);
                 },
@@ -163,11 +146,7 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                    labelText: "Department",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.blue.shade900, width: 2.0))),
+                    labelText: "Department", fillColor: Colors.white, focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue.shade900, width: 2.0))),
                 onChanged: (String department) {
                   getEmployeeDepartment(department);
                 },
@@ -177,53 +156,45 @@ class _MyAppState extends State<MyApp> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.green[900])),
+                    style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.green[900])),
                     onPressed: () {
                       createData();
                     },
-                    child: Text(
+                    child: const Text(
                       "Add",
                       style: TextStyle(color: Colors.white),
                     )),
                 ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.blue[900])),
+                    style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blue[900])),
                     onPressed: () {
                       readData();
                     },
-                    child: Text(
+                    child: const Text(
                       "View",
                       style: TextStyle(color: Colors.white),
                     )),
                 ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.yellow[900])),
+                    style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.yellow[900])),
                     onPressed: () {
                       updateData();
                     },
-                    child: Text(
+                    child: const Text(
                       "Update",
                       style: TextStyle(color: Colors.white),
                     )),
                 ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.red[900])),
+                    style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.red[900])),
                     onPressed: () {
                       deleteData();
                     },
-                    child: Text(
+                    child: const Text(
                       "Delete",
                       style: TextStyle(color: Colors.white),
                     )),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Row(textDirection: TextDirection.ltr, children: <Widget>[
                 Expanded(child: Text("Name")),
                 Expanded(child: Text("Position")),
@@ -232,26 +203,19 @@ class _MyAppState extends State<MyApp> {
               ]),
             ),
             StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("MyEmployees")
-                  .snapshots(),
+              stream: FirebaseFirestore.instance.collection("MyEmployees").snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      DocumentSnapshot documentSnapshot =
-                          snapshot.data!.docs[index];
+                      DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
                       // Extract relevant fields from the documentSnapshot
-                      String employeeName =
-                          documentSnapshot["employeeName"] ?? "";
-                      String employeePosition =
-                          documentSnapshot["employeePosition"] ?? "";
-                      String employeeContact =
-                          documentSnapshot["employeeContact"] ?? "";
-                      String employeeDepartment =
-                          documentSnapshot["employeeDepartment"] ?? "";
+                      String employeeName = documentSnapshot["employeeName"] ?? "";
+                      String employeePosition = documentSnapshot["employeePosition"] ?? "";
+                      String employeeContact = documentSnapshot["employeeContact"] ?? "";
+                      String employeeDepartment = documentSnapshot["employeeDepartment"] ?? "";
 
                       // Display the data in a Row
                       return Row(
@@ -266,10 +230,10 @@ class _MyAppState extends State<MyApp> {
                   );
                 } else if (snapshot.hasError) {
                   // Handle error state (e.g., display an error message)
-                  return Text("Error fetching data from Firestore");
+                  return const Text("Error fetching data from Firestore");
                 } else {
                   // Handle loading state (e.g., display a loading indicator)
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               },
             )
