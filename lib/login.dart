@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Image.asset("assets/images/hotel.png", width: 150, height: 150),
+              Image.asset("assets/images/hotel-pol.png", width: 150, height: 150),
               _entryField('Email', _controllerEmail),
               _entryField('Password', _controllerPassword),
               _errorMessage(),
