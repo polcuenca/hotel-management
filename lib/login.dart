@@ -1,77 +1,106 @@
 import 'package:flutter/material.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-    );
-  }
-}
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hotelmanagement/main.dart';
+import '../auth.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Text field controllers for username and password
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  String? errorMessage = '';
+  bool isLogin = true;
+
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+
+  Future<void> signInWithEmailAndPasssword() async {
+    try {
+      await Auth().signInWithEmailAndPassword(
+        email: _controllerEmail.text,
+        password: _controllerPassword.text,
+      );
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => MyApp()));
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      await Auth().createUserWithEmailAndPassword(
+        email: _controllerEmail.text,
+        password: _controllerPassword.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Widget _title() {
+    return const Text('Hotel Records');
+  }
+
+  Widget _entryField(
+    String title,
+    TextEditingController controller,
+  ) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: title,
+      ),
+    );
+  }
+
+  Widget _errorMessage() {
+    return Text(errorMessage == '' ? '' : 'Humm ? $errorMessage');
+  }
+
+  Widget _submitButton() {
+    return ElevatedButton(
+      onPressed: isLogin
+          ? signInWithEmailAndPasssword
+          : createUserWithEmailAndPassword,
+      child: Text(isLogin ? 'Login' : 'Register'),
+    );
+  }
+
+  Widget _loginOrRegisterButton() {
+    return TextButton(
+      onPressed: () {
+        setState(() {
+          isLogin = !isLogin;
+        });
+      },
+      child: Text(isLogin ? 'Register instead' : 'Login instead'),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Username text field
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Username",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.blue.shade900, width: 2.0))),
-                ),
-              ),
-              SizedBox(height: 10),
-              // Password text field (obscure text)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Password",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.blue.shade900, width: 2.0))),
-                ),
-              ),
-              SizedBox(height: 20),
-              // Login button
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(Colors.blue[900])),
-                  onPressed: () {
-                    ();
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ],
-          ),
-        ),
-      ),
-    );
+        appBar: AppBar(title: _title()),
+        body: Container(
+            height: double.infinity,
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _entryField('Email', _controllerEmail),
+                  _entryField('Password', _controllerPassword),
+                  _errorMessage(),
+                  _submitButton(),
+                  _loginOrRegisterButton(),
+                ])));
   }
 }
